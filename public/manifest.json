@@ -1,0 +1,21 @@
+{
+	"name": "Jasper Kooij - Director of Web Development",
+	"short_name": "Jasper Kooij",
+	"description": "Full-stack developer and technical team leader with over 25 years at the forefront of web innovation.",
+	"start_url": "/",
+	"display": "standalone",
+	"background_color": "#ffffff",
+	"theme_color": "#000000",
+	"icons": [
+		{
+			"src": "/favicon.png",
+			"sizes": "32x32",
+			"type": "image/png"
+		},
+		{
+			"src": "/apple-touch-icon.png",
+			"sizes": "180x180",
+			"type": "image/png"
+		}
+	]
+}

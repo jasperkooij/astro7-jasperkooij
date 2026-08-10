@@ -9,9 +9,41 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "check": "astro check",
+    "format": "prettier --write .",
+    "astro": "astro",
+    "generate-types": "wrangler types"
   },
   "dependencies": {
-    "astro": "^7.2.0"
+    "@astrojs/cloudflare": "^14.2.0",
+    "@astrojs/sitemap": "^3.7.3",
+    "@astrojs/svelte": "^9.0.1",
+    "@builder.io/sdk": "^6.3.1",
+    "@builder.io/sdk-svelte": "^5.2.6",
+    "@tailwindcss/forms": "^0.5.11",
+    "@tailwindcss/typography": "^0.5.20",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.2.0",
+    "daisyui": "^5.7.16",
+    "linkedom": "^0.18.13",
+    "svelte": "^5.56.8",
+    "tailwindcss": "^4.3.3",
+    "turndown": "^7.2.4",
+    "wrangler": "^4.120.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@cloudflare/workers-types": "^5.20260809.1",
+    "@types/turndown": "^5.0.6",
+    "prettier": "^3.9.6",
+    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "typescript": "^6.0.3"
+  },
+  "overrides": {
+    "vite": "^8.2.1"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "isolated-vm", "workerd"]
   }
 }

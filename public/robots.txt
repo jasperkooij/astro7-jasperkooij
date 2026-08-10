@@ -1,0 +1,9 @@
+# Allow all bots
+User-agent: *
+Allow: /
+
+# Specify the sitemap location
+Sitemap: https://jasperkooij.com/sitemap-index.xml
+
+# LLM-friendly content index
+LLMs: https://jasperkooij.com/llms.txt

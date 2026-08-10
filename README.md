@@ -1,43 +1,54 @@
-# Astro Starter Kit: Minimal
+# jasperkooij.com
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Source for [jasperkooij.com](https://jasperkooij.com) — an Astro 7 + Svelte site with content pulled live from [Builder.io](https://www.builder.io/) (headless CMS), cached in Cloudflare KV, and deployed on Cloudflare Workers.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Stack
 
-## 🚀 Project Structure
+- [Astro 7](https://astro.build) with the [`@astrojs/cloudflare`](https://docs.astro.build/en/guides/integrations-guide/cloudflare/) adapter
+- [Svelte 5](https://svelte.dev) for interactive components
+- [Tailwind CSS v4](https://tailwindcss.com) (CSS-first config, `src/styles/global.css`) + [daisyUI](https://daisyui.com)
+- [Builder.io](https://www.builder.io/) as the CMS — pages are fetched at request time in `src/pages/[...slug].astro` and cached in the `BUILDER_CACHE` Cloudflare KV namespace (see `src/utils/builderContent.ts`)
+- `POST /api/revalidate` — webhook that purges the KV cache when content is republished in Builder.io
 
-Inside of your Astro project, you'll see the following folders and files:
+## Project structure
 
 ```text
 /
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+├── public/              static assets, robots.txt, _headers, _redirects
+└── src/
+    ├── components/      Astro + Svelte components, incl. Builder.io block renderers
+    ├── layouts/         BaseLayout.astro
+    ├── pages/           index.astro, [...slug].astro, api/revalidate.ts
+    ├── styles/          global.css (Tailwind v4 + daisyUI)
+    ├── utils/           Builder.io fetch/cache + HTML-to-Markdown helpers
+    └── middleware.ts
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Commands
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+This project uses [pnpm](https://pnpm.io).
 
-Any static assets, like images, can be placed in the `public/` directory.
+| Command             | Action                                        |
+| :------------------- | :--------------------------------------------- |
+| `pnpm install`        | Install dependencies                           |
+| `pnpm dev`             | Start local dev server at `localhost:4321`     |
+| `pnpm build`           | Build the production site to `./dist/`         |
+| `pnpm preview`         | Preview the build locally                      |
+| `pnpm check`           | Type-check with `astro check`                  |
+| `pnpm format`          | Format with Prettier                           |
+| `pnpm generate-types`  | Regenerate Cloudflare Worker types via Wrangler |
 
-## 🧞 Commands
+## Environment variables
 
-All commands are run from the root of the project, from a terminal:
+Local dev needs a `.env` (gitignored) with:
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+```
+PUBLIC_BUILDER_API_KEY=...
+PUBLIC_GOOGLE_ANALYTICS_ID=...
+```
 
-## 👀 Want to learn more?
+`WEBHOOK_SECRET` (used by `/api/revalidate`) is set as a Cloudflare Worker secret, not in local `.env`.
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## Deploying
+
+The Cloudflare Worker is connected to this repo via Cloudflare's dashboard Git integration (Workers Builds) — pushing to `main` triggers a build (`pnpm install && pnpm build`) and deploy automatically, using `wrangler.jsonc` for the Worker config (KV binding, assets, compatibility flags). No GitHub Actions workflow is used for deployment.

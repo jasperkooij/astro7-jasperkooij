@@ -1,0 +1,43 @@
+---
+// FAQ Schema for rich snippets in search results
+const faqSchema = {
+	"@context": "https://schema.org",
+	"@type": "FAQPage",
+	"mainEntity": [
+		{
+			"@type": "Question",
+			"name": "What technologies does Jasper Kooij specialize in?",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": "Jasper specializes in WordPress (Bricks Builder, Oxygen Builder), Svelte, React, Qwik, Builder.io, and Craft CMS. He also has extensive experience with deployment platforms like Vercel, AWS, Netlify, and Cloudflare."
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "What booking engines does Jasper Kooij integrate?",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": "Jasper integrates leading booking engines including Ventrata, Roller, Peek Pro, FareHarbor, Galaxy Connect, and Rezdy for hotels, tours, and attraction operators."
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "Where is Jasper Kooij located?",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": "Jasper is based in the Madison, Wisconsin area and works with clients across North America, Canada, and Europe."
+			}
+		},
+		{
+			"@type": "Question",
+			"name": "What services does Jasper Kooij offer?",
+			"acceptedAnswer": {
+				"@type": "Answer",
+				"text": "Jasper offers full-stack web development, technical team leadership, booking engine integration, performance optimization, Core Web Vitals improvement, SEO, A/B testing, and cloud-based analytics solutions for travel, hospitality, and tourism clients."
+			}
+		}
+	]
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />

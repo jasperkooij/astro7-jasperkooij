@@ -1,0 +1,4 @@
+---
+const currentUrl = new URL(Astro.url.pathname, Astro.site);
+---
+<link rel="alternate" type="text/markdown" href={currentUrl.href} />

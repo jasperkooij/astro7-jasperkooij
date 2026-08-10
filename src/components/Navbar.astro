@@ -1,0 +1,217 @@
+---
+// Navbar component for Astro
+---
+
+<!-- NAV -->
+<nav class="navbar bg-base-100 z-50 shadow-md" aria-label="Main navigation">
+	<div class="flex-1">
+		<a href="/" class="flex items-center gap-2">
+			<img
+				src="/logo.svg"
+				alt="Jasper Kooij logo"
+				class="h-8 w-8"
+				loading="eager"
+				fetchpriority="high"
+			/>
+			<span class="text-lg font-bold">Jasper Kooij</span>
+		</a>
+	</div>
+
+	<!-- DESKTOP NAV -->
+	<div class="hidden items-center gap-4 lg:flex">
+		<a href="/" class="btn btn-ghost">Home</a>
+		<a href="/#about" class="btn btn-ghost">About</a>
+		<a href="/#contact" class="btn btn-ghost">Contact</a>
+
+		<!-- THEME TOGGLE -->
+		<label
+			class="flex cursor-pointer items-center gap-2"
+			for="theme-toggle-desktop"
+			aria-label="Toggle light and dark theme"
+		>
+			<svg width="20" height="20" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+				<circle cx="12" cy="12" r="5"></circle>
+				<path
+					d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"
+				></path>
+			</svg>
+			<input
+				id="theme-toggle-desktop"
+				type="checkbox"
+				class="toggle theme-controller bg-none"
+				data-toggle-theme="light,dark"
+				role="switch"
+			/>
+			<svg width="20" height="20" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+				<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+			</svg>
+		</label>
+	</div>
+
+	<!-- MOBILE HAMBURGER -->
+	<div class="lg:hidden">
+		<button
+			id="mobile-menu-btn"
+			class="btn btn-ghost btn-circle"
+			aria-label="Open menu"
+			aria-expanded="false"
+			aria-controls="mobile-menu"
+		>
+			<svg
+				id="hamburger-icon"
+				xmlns="http://www.w3.org/2000/svg"
+				class="h-6 w-6"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M4 6h16M4 12h16M4 18h16"></path>
+			</svg>
+		</button>
+	</div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div
+	id="mobile-menu"
+	role="dialog"
+	aria-modal="true"
+	aria-label="Mobile navigation menu"
+	class="bg-base-100 fixed inset-0 z-40 hidden flex-col items-center justify-center gap-6 p-6 text-xl"
+>
+	<!-- Close button -->
+	<button
+		id="mobile-menu-close"
+		class="btn btn-sm btn-circle absolute top-4 right-4"
+		aria-label="Close mobile menu"
+	>
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			class="h-6 w-6"
+			viewBox="0 0 24 24"
+			stroke="currentColor"
+			fill="none"
+		>
+			<path
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				stroke-width="2"
+				d="M6 18L18 6M6 6l12 12"></path>
+		</svg>
+	</button>
+
+	<a href="/" class="btn btn-ghost text-2xl mobile-menu-link">Home</a>
+	<a href="/#about" class="btn btn-ghost text-2xl mobile-menu-link">About</a>
+	<a href="/#contact" class="btn btn-ghost text-2xl mobile-menu-link">Contact</a>
+
+	<!-- THEME TOGGLE (Mobile) -->
+	<label
+		class="flex cursor-pointer items-center gap-2"
+		for="theme-toggle-mobile"
+		aria-label="Toggle light and dark theme"
+	>
+		<svg width="20" height="20" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+			<circle cx="12" cy="12" r="5"></circle>
+			<path
+				d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"
+			></path>
+		</svg>
+		<input
+			id="theme-toggle-mobile"
+			type="checkbox"
+			class="toggle theme-controller bg-none"
+			data-toggle-theme="light,dark"
+			role="switch"
+		/>
+		<svg width="20" height="20" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+			<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+		</svg>
+	</label>
+</div>
+
+<script>
+	// Theme toggle functionality
+	function initTheme() {
+		const theme = localStorage.getItem('theme') ?? 'light';
+		document.documentElement.setAttribute('data-theme', theme);
+
+		// Sync checkboxes with stored theme
+		const desktopToggle = document.getElementById(
+			'theme-toggle-desktop'
+		) as HTMLInputElement | null;
+		const mobileToggle = document.getElementById(
+			'theme-toggle-mobile'
+		) as HTMLInputElement | null;
+
+		if (desktopToggle && mobileToggle) {
+			const isDark = theme === 'dark';
+			desktopToggle.checked = isDark;
+			mobileToggle.checked = isDark;
+		}
+	}
+
+	function setupThemeToggles() {
+		const desktopToggle = document.getElementById('theme-toggle-desktop');
+		const mobileToggle = document.getElementById('theme-toggle-mobile');
+
+		const toggleTheme = () => {
+			const currentTheme = document.documentElement.getAttribute('data-theme');
+			const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+			document.documentElement.setAttribute('data-theme', newTheme);
+			localStorage.setItem('theme', newTheme);
+
+			// Sync both toggles
+			const isDark = newTheme === 'dark';
+			if (desktopToggle) (desktopToggle as HTMLInputElement).checked = isDark;
+			if (mobileToggle) (mobileToggle as HTMLInputElement).checked = isDark;
+		};
+
+		desktopToggle?.addEventListener('change', toggleTheme);
+		mobileToggle?.addEventListener('change', toggleTheme);
+	}
+
+	// Mobile menu functionality
+	function setupMobileMenu() {
+		const menuBtn = document.getElementById('mobile-menu-btn');
+		const mobileMenu = document.getElementById('mobile-menu');
+		const closeBtn = document.getElementById('mobile-menu-close');
+		const menuLinks = document.querySelectorAll('.mobile-menu-link');
+
+		const openMenu = () => {
+			mobileMenu?.classList.remove('hidden');
+			mobileMenu?.classList.add('flex');
+			menuBtn?.setAttribute('aria-expanded', 'true');
+		};
+
+		const closeMenu = () => {
+			mobileMenu?.classList.add('hidden');
+			mobileMenu?.classList.remove('flex');
+			menuBtn?.setAttribute('aria-expanded', 'false');
+		};
+
+		menuBtn?.addEventListener('click', openMenu);
+		closeBtn?.addEventListener('click', closeMenu);
+		menuLinks.forEach((link) => link.addEventListener('click', closeMenu));
+
+		// Close on Escape key
+		document.addEventListener('keydown', (e) => {
+			if (e.key === 'Escape') closeMenu();
+		});
+	}
+
+	// Initialize on page load
+	initTheme();
+	setupThemeToggles();
+	setupMobileMenu();
+
+	// Re-initialize on navigation (for Astro View Transitions)
+	document.addEventListener('astro:page-load', () => {
+		initTheme();
+		setupThemeToggles();
+		setupMobileMenu();
+	});
+</script>

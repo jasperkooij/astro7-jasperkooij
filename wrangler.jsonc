@@ -1,0 +1,21 @@
+{
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"compatibility_date": "2026-08-08",
+	"compatibility_flags": ["global_fetch_strictly_public", "nodejs_compat"],
+	"name": "astro7-jasperkooij",
+	"main": "@astrojs/cloudflare/entrypoints/server",
+	"assets": {
+		"directory": "./dist",
+		"binding": "ASSETS"
+	},
+	"kv_namespaces": [
+		{
+			"binding": "BUILDER_CACHE",
+			"id": "030dfb5b5fa34413978ed743250e7c36",
+			"preview_id": "07457f4720f34d899ed0a1cbf1790d3f"
+		}
+	],
+	"observability": {
+		"enabled": true
+	}
+}

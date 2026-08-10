@@ -1,0 +1,116 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="bg-base-200 text-base-content px-4 py-10">
+	<!-- Top Nav + Buy Me a Coffee -->
+	<div class="flex flex-col items-center justify-center gap-4 md:flex-row md:gap-10">
+		<nav class="flex gap-6 text-lg font-semibold" aria-label="Footer navigation">
+			<a href="/" aria-label="Home" class="hover:underline">Home</a>
+			<a href="/#about" aria-label="About" class="hover:underline">About</a>
+			<a href="/#contact" aria-label="Contact" class="hover:underline">Contact</a>
+		</nav>
+
+		<!-- Buy Me a Coffee -->
+		<a
+			class="shrink-0"
+			href="https://buymeacoffee.com/jasperkooij"
+			target="_blank"
+			rel="noopener noreferrer"
+			aria-label="Buy Me A Coffee"
+		>
+			<img
+				src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
+				alt="Buy Me A Coffee"
+				width="195"
+				height="40"
+				loading="lazy"
+			/>
+		</a>
+	</div>
+
+	<!-- Social Links -->
+	<div
+		class="text-neutral-content mt-6 flex justify-center gap-6 opacity-50"
+		aria-label="Social media links"
+	>
+		<a
+			href="https://bsky.app/profile/jasperkooij.com"
+			aria-label="BlueSky"
+			target="_blank"
+			rel="noopener"
+			class="hover:text-primary"
+		>
+			<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
+				><path
+					fill="currentColor"
+					d="M12 11.388c-.906-1.761-3.372-5.044-5.665-6.662c-2.197-1.55-3.034-1.283-3.583-1.033C2.116 3.978 2 4.955 2 5.528c0 .575.315 4.709.52 5.4c.68 2.28 3.094 3.05 5.32 2.803c-3.26.483-6.157 1.67-2.36 5.898c4.178 4.325 5.726-.927 6.52-3.59c.794 2.663 1.708 7.726 6.444 3.59c3.556-3.59.977-5.415-2.283-5.898c2.225.247 4.64-.523 5.319-2.803c.205-.69.52-4.825.52-5.399c0-.575-.116-1.55-.752-1.838c-.549-.248-1.386-.517-3.583 1.033c-2.293 1.621-4.76 4.904-5.665 6.664"
+				></path></svg
+			>
+		</a>
+		<a
+			href="https://www.linkedin.com/in/jasperkooij/"
+			aria-label="LinkedIn"
+			target="_blank"
+			rel="noopener"
+			class="hover:text-primary"
+		>
+			<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
+				><path
+					fill="currentColor"
+					d="M6.94 5a2 2 0 1 1-4-.002a2 2 0 0 1 4 .002M7 8.48H3V21h4zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91z"
+				></path></svg
+			>
+		</a>
+		<a
+			href="https://discordapp.com/users/jasperkooij"
+			aria-label="Discord"
+			target="_blank"
+			rel="noopener"
+			class="hover:text-primary"
+		>
+			<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
+				><path
+					fill="currentColor"
+					d="M19.303 5.337A17.3 17.3 0 0 0 14.963 4c-.191.329-.403.775-.552 1.125a16.6 16.6 0 0 0-4.808 0C9.454 4.775 9.23 4.329 9.05 4a17 17 0 0 0-4.342 1.337C1.961 9.391 1.218 13.35 1.59 17.255a17.7 17.7 0 0 0 5.318 2.664a13 13 0 0 0 1.136-1.836c-.627-.234-1.22-.52-1.794-.86c.149-.106.297-.223.435-.34c3.46 1.582 7.207 1.582 10.624 0c.149.117.287.234.435.34c-.573.34-1.167.626-1.793.86a13 13 0 0 0 1.135 1.836a17.6 17.6 0 0 0 5.318-2.664c.457-4.52-.722-8.448-3.1-11.918M8.52 14.846c-1.04 0-1.889-.945-1.889-2.101s.828-2.102 1.89-2.102c1.05 0 1.91.945 1.888 2.102c0 1.156-.838 2.1-1.889 2.1m6.974 0c-1.04 0-1.89-.945-1.89-2.101s.828-2.102 1.89-2.102c1.05 0 1.91.945 1.889 2.102c0 1.156-.828 2.1-1.89 2.1"
+				></path></svg
+			>
+		</a>
+		<a
+			href="https://github.com/jasperkooij"
+			aria-label="GitHub"
+			target="_blank"
+			rel="noopener"
+			class="hover:text-primary"
+		>
+			<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
+				><path
+					fill="currentColor"
+					d="M12.001 2c-5.525 0-10 4.475-10 10a9.99 9.99 0 0 0 6.837 9.488c.5.087.688-.213.688-.476c0-.237-.013-1.024-.013-1.862c-2.512.463-3.162-.612-3.362-1.175c-.113-.288-.6-1.175-1.025-1.413c-.35-.187-.85-.65-.013-.662c.788-.013 1.35.725 1.538 1.025c.9 1.512 2.337 1.087 2.912.825c.088-.65.35-1.087.638-1.337c-2.225-.25-4.55-1.113-4.55-4.938c0-1.088.387-1.987 1.025-2.687c-.1-.25-.45-1.275.1-2.65c0 0 .837-.263 2.75 1.024a9.3 9.3 0 0 1 2.5-.337c.85 0 1.7.112 2.5.337c1.913-1.3 2.75-1.024 2.75-1.024c.55 1.375.2 2.4.1 2.65c.637.7 1.025 1.587 1.025 2.687c0 3.838-2.337 4.688-4.562 4.938c.362.312.675.912.675 1.85c0 1.337-.013 2.412-.013 2.75c0 .262.188.574.688.474A10.02 10.02 0 0 0 22 12c0-5.525-4.475-10-10-10"
+				></path></svg
+			>
+		</a>
+		<a
+			href="https://twitter.com/jasperkooij/"
+			aria-label="Twitter"
+			target="_blank"
+			rel="noopener"
+			class="hover:text-primary"
+		>
+			<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
+				><path
+					fill="currentColor"
+					d="M22.213 5.656a8.4 8.4 0 0 1-2.402.658A4.2 4.2 0 0 0 21.649 4c-.82.488-1.719.83-2.655 1.015a4.182 4.182 0 0 0-7.126 3.814a11.87 11.87 0 0 1-8.621-4.37a4.17 4.17 0 0 0-.566 2.103c0 1.45.739 2.731 1.86 3.481a4.2 4.2 0 0 1-1.894-.523v.051a4.185 4.185 0 0 0 3.355 4.102a4.2 4.2 0 0 1-1.89.072A4.185 4.185 0 0 0 8.02 16.65a8.4 8.4 0 0 1-6.192 1.732a11.83 11.83 0 0 0 6.41 1.88c7.694 0 11.9-6.373 11.9-11.9q0-.271-.012-.541a8.5 8.5 0 0 0 2.086-2.164"
+				></path></svg
+			>
+		</a>
+	</div>
+
+	<!-- Copyright -->
+	<div class="text-base-content mx-auto mt-6 px-4 text-center text-sm opacity-70">
+		<p>
+			Copyright © {currentYear} — All rights reserved by Jasper Kooij | 3467 Swansee Ridge, Sun
+			Prairie WI 53590 | +1.608.469.7003
+		</p>
+	</div>
+</footer>

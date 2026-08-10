@@ -1,0 +1,183 @@
+---
+// Contact Form with Formspree integration
+---
+
+<form
+	id="contact-form"
+	class="bg-base-200 mx-auto max-w-md rounded-lg p-6 shadow-md"
+	data-formspree-url="https://formspree.io/f/myyvpapn"
+	aria-labelledby="contact-heading"
+	novalidate
+>
+	<h2 id="contact-heading" class="mb-4 text-center font-bold">Let's Talk</h2>
+
+	<!-- Name Field -->
+	<div class="form-control">
+		<label class="label" for="name">
+			<span class="label-text">Name:</span>
+		</label>
+		<input
+			type="text"
+			id="name"
+			name="name"
+			required
+			placeholder="Enter your name"
+			class="input input-bordered w-full"
+			aria-required="true"
+			autocomplete="name"
+		/>
+	</div>
+
+	<!-- Email Field -->
+	<div class="form-control mt-4">
+		<label class="label" for="email">
+			<span class="label-text">Email:</span>
+		</label>
+		<input
+			type="email"
+			id="email"
+			name="email"
+			required
+			placeholder="Enter your email"
+			class="input input-bordered w-full"
+			aria-required="true"
+			autocomplete="email"
+		/>
+	</div>
+
+	<!-- Phone Number Field -->
+	<div class="form-control mt-4">
+		<label class="label" for="phone">
+			<span class="label-text">Phone Number:</span>
+		</label>
+		<input
+			type="tel"
+			id="phone"
+			name="phone"
+			placeholder="Enter your phone number (e.g., +1 123-456-7890)"
+			class="input input-bordered w-full"
+			aria-describedby="phone-help"
+			autocomplete="tel"
+		/>
+		<span id="phone-help" class="label-text-alt mt-1">Optional - U.S. format only</span>
+	</div>
+
+	<!-- Message Field -->
+	<div class="form-control mt-4">
+		<label class="label" for="message">
+			<span class="label-text">Message:</span>
+		</label>
+		<textarea
+			id="message"
+			name="message"
+			required
+			placeholder="Enter your message"
+			class="textarea textarea-bordered w-full"
+			aria-required="true"
+			rows="5"></textarea>
+	</div>
+
+	<!-- Verification Question -->
+	<div class="form-control mt-4">
+		<label class="label" for="verification">
+			<span class="label-text">How much is four times 2?</span>
+		</label>
+		<input
+			type="text"
+			id="verification"
+			name="verification"
+			required
+			placeholder="Enter your answer"
+			class="input input-bordered w-full"
+			aria-required="true"
+			aria-describedby="verification-help"
+			autocomplete="off"
+		/>
+		<span id="verification-help" class="label-text-alt mt-1">Anti-spam verification</span>
+	</div>
+
+	<!-- Error Message -->
+	<p id="error-message" class="text-error mt-4 hidden text-center" role="alert" aria-live="assertive"></p>
+
+	<!-- Success Message -->
+	<p id="success-message" class="text-success mt-4 hidden text-center" role="status" aria-live="polite"></p>
+
+	<!-- Submit Button -->
+	<button type="submit" class="btn btn-primary mt-6 w-full">Send Message</button>
+</form>
+
+<script>
+	function setupContactForm() {
+		const form = document.getElementById('contact-form') as HTMLFormElement | null;
+		const errorEl = document.getElementById('error-message');
+		const successEl = document.getElementById('success-message');
+
+		if (!form || !errorEl || !successEl) return;
+
+		const formspreeUrl = form.dataset.formspreeUrl;
+		if (!formspreeUrl) return;
+
+		// USA phone regex
+		const phoneRegex = /^(\+1\s?)?(\([0-9]{3}\)|[0-9]{3})[-.\s]?[0-9]{3}[-.\s]?[0-9]{4}$/;
+
+		form.addEventListener('submit', async (e) => {
+			e.preventDefault();
+
+			// Hide previous messages
+			errorEl.classList.add('hidden');
+			successEl.classList.add('hidden');
+
+			// Get form data
+			const formData = new FormData(form);
+			const verification = formData.get('verification')?.toString().trim();
+			const phone = formData.get('phone')?.toString().trim();
+
+			// Validate verification answer
+			if (verification !== '8') {
+				errorEl.textContent = 'Incorrect answer. Please try again.';
+				errorEl.classList.remove('hidden');
+				return;
+			}
+
+			// Validate phone number if provided
+			if (phone && !phoneRegex.test(phone)) {
+				errorEl.textContent = 'Please enter a valid USA phone number.';
+				errorEl.classList.remove('hidden');
+				return;
+			}
+
+			// Submit to Formspree
+			try {
+				const response = await fetch(formspreeUrl, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						name: formData.get('name'),
+						email: formData.get('email'),
+						phone: formData.get('phone'),
+						message: formData.get('message')
+					})
+				});
+
+				if (response.ok) {
+					form.reset();
+					successEl.textContent = 'Message sent successfully!';
+					successEl.classList.remove('hidden');
+				} else {
+					throw new Error('Form submission failed');
+				}
+			} catch (error) {
+				errorEl.textContent = 'There was an error submitting the form. Please try again.';
+				errorEl.classList.remove('hidden');
+			}
+		});
+	}
+
+	// Initialize on page load
+	setupContactForm();
+
+	// Re-initialize on navigation (for Astro View Transitions)
+	document.addEventListener('astro:page-load', setupContactForm);
+</script>

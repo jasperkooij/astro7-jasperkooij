@@ -1,0 +1,134 @@
+---
+import '../styles/global.css';
+import MarkdownAlternateLink from '../components/MarkdownAlternateLink.astro';
+import { ClientRouter } from 'astro:transitions';
+
+interface Props {
+	title?: string;
+	description?: string;
+	image?: string;
+}
+
+const {
+	title = 'Jasper Kooij',
+	description = 'Director of Web Development',
+	image = '/og-image.png'
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImageURL = new URL(image, Astro.site);
+
+const schemaGraph = [
+	{
+		"@context": "https://schema.org",
+		"@type": "WebSite",
+		"@id": "https://jasperkooij.com/#website",
+		"url": "https://jasperkooij.com/",
+		"name": "Jasper Kooij",
+		"description": "Full-stack developer specialising in travel, hospitality, and tourism clients.",
+		"publisher": { "@id": "https://jasperkooij.com/#person" },
+		"potentialAction": {
+			"@type": "SearchAction",
+			"target": {
+				"@type": "EntryPoint",
+				"urlTemplate": "https://jasperkooij.com/?s={search_term_string}"
+			},
+			"query-input": "required name=search_term_string"
+		}
+	},
+	{
+		"@context": "https://schema.org",
+		"@type": "WebPage",
+		"@id": `${canonicalURL}#webpage`,
+		"url": canonicalURL,
+		"name": title,
+		"description": description,
+		"isPartOf": { "@id": "https://jasperkooij.com/#website" },
+		"about": { "@id": "https://jasperkooij.com/#person" }
+	},
+	{
+		"@context": "https://schema.org",
+		"@type": "Person",
+		"@id": "https://jasperkooij.com/#person",
+		"name": "Jasper Kooij",
+		"description": "Full-stack developer and technical team leader with over 25 years of experience, specialising in travel, hospitality, and tourism clients.",
+		"jobTitle": "Director of Web Development",
+		"image": "https://cdn.builder.io/api/v1/image/assets%2F06e23a278b8341c7a916ce880385fb89%2F7edac098d9ab4d7a916c474e8908cb21",
+		"email": "jasperkooij@gmail.com",
+		"telephone": "+1.608.469.7003",
+		"address": {
+			"@type": "PostalAddress",
+			"addressLocality": "Madison",
+			"addressRegion": "WI",
+			"addressCountry": "US"
+		},
+		"worksFor": {
+			"@type": "Organization",
+			"name": "Blend Marketing"
+		},
+		"url": "https://jasperkooij.com/",
+		"sameAs": [
+			"https://www.linkedin.com/in/jasperkooij/",
+			"https://bsky.app/profile/jasperkooij.com",
+			"https://twitter.com/jasperkooij",
+			"https://github.com/jasperkooij"
+		],
+		"copyrightHolder": { "@id": "https://jasperkooij.com/#person" },
+		"copyrightYear": 2025,
+		"publishingPrinciples": "https://jasperkooij.com/#about",
+		"knowsAbout": [
+			"Full-Stack Web Development",
+			"WordPress",
+			"Svelte",
+			"React",
+			"Astro",
+			"Booking Engine Integration",
+			"Cloudflare Workers",
+			"Performance Optimization",
+			"Travel & Hospitality Websites",
+			"Headless CMS"
+		]
+	}
+];
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="/favicon.ico" sizes="32x32" />
+		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		<link rel="manifest" href="/manifest.json" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+
+		<!-- Canonical URL -->
+		<link rel="canonical" href={canonicalURL} />
+		<MarkdownAlternateLink />
+		<ClientRouter />
+
+		<!-- Open Graph -->
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="Jasper Kooij" />
+		<meta property="og:locale" content="en_US" />
+		<meta property="og:url" content={canonicalURL} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={ogImageURL} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content="Jasper Kooij - Full Stack Developer" />
+
+		<!-- Twitter / X Card -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:creator" content="@jasperkooij" />
+
+		<script is:inline type="application/ld+json" set:html={JSON.stringify(schemaGraph)} />
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>

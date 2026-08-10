@@ -1,0 +1,27 @@
+# Jasper Kooij
+
+> Full-stack developer and technical team leader with over 25 years of web development experience, specialising in travel, hospitality, and tourism clients. Based in Madison, Wisconsin. Works with clients across North America, Canada, and Europe.
+
+## About
+
+Jasper Kooij is Director of Web Development at Blend Marketing. He builds high-performance websites and integrates booking engines for hotels, tour operators, and attraction venues.
+
+## Expertise
+
+- Frontend frameworks: Svelte, React, Qwik, Astro
+- CMS platforms: Builder.io, WordPress (Bricks Builder, Oxygen Builder), Craft CMS
+- Booking engine integrations: Ventrata, Roller, Peek Pro, FareHarbor, Galaxy Connect, Rezdy
+- Deployment: Cloudflare, Vercel, AWS, Netlify
+- Performance: Core Web Vitals, SEO, A/B testing, cloud-based analytics
+
+## Pages
+
+- [Home](https://jasperkooij.com/): Portfolio, background, and contact form
+- [Markdown version](https://jasperkooij.com/): Request with `Accept: text/markdown` header for clean machine-readable content
+
+## Contact
+
+- Email: jasperkooij@gmail.com
+- LinkedIn: https://www.linkedin.com/in/jasperkooij/
+- GitHub: https://github.com/jasperkooij
+- Bluesky: https://bsky.app/profile/jasperkooij.com
