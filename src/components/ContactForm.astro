@@ -8,6 +8,11 @@
 	data-formspree-url="https://formspree.io/f/myyvpapn"
 	aria-labelledby="contact-heading"
 	novalidate
+	{...{
+		toolname: 'contact-jasper',
+		tooldescription:
+			"Send a message to Jasper Kooij through his contact form to inquire about web development work, collaboration, or general questions. Requires manual confirmation before sending."
+	}}
 >
 	<h2 id="contact-heading" class="mb-4 text-center font-bold">Let's Talk</h2>
 
@@ -25,6 +30,7 @@
 			class="input input-bordered w-full"
 			aria-required="true"
 			autocomplete="name"
+			{...{ toolparamdescription: "The sender's full name." }}
 		/>
 	</div>
 
@@ -42,6 +48,7 @@
 			class="input input-bordered w-full"
 			aria-required="true"
 			autocomplete="email"
+			{...{ toolparamdescription: "The sender's email address, so Jasper can reply." }}
 		/>
 	</div>
 
@@ -58,6 +65,10 @@
 			class="input input-bordered w-full"
 			aria-describedby="phone-help"
 			autocomplete="tel"
+			{...{
+				toolparamdescription:
+					'Optional. A US-format phone number, e.g. (608) 555-1234 or +1 608-555-1234.'
+			}}
 		/>
 		<span id="phone-help" class="label-text-alt mt-1">Optional - U.S. format only</span>
 	</div>
@@ -74,7 +85,12 @@
 			placeholder="Enter your message"
 			class="textarea textarea-bordered w-full"
 			aria-required="true"
-			rows="5"></textarea>
+			rows="5"
+			{...{
+				toolparamdescription:
+					'The message to send to Jasper: describe the inquiry, project, or question.'
+			}}
+		></textarea>
 	</div>
 
 	<!-- Verification Question -->
@@ -120,7 +136,15 @@
 		// USA phone regex
 		const phoneRegex = /^(\+1\s?)?(\([0-9]{3}\)|[0-9]{3})[-.\s]?[0-9]{3}[-.\s]?[0-9]{4}$/;
 
-		form.addEventListener('submit', async (e) => {
+		// WebMCP form-submission extensions (agentInvoked, respondWith) aren't in
+		// TypeScript's DOM lib yet - this spec is in early preview in Chromium.
+		type AgenticSubmitEvent = SubmitEvent & {
+			agentInvoked?: boolean;
+			respondWith?: (response: Promise<string>) => void;
+		};
+
+		form.addEventListener('submit', async (evt) => {
+			const e = evt as AgenticSubmitEvent;
 			e.preventDefault();
 
 			// Hide previous messages
@@ -134,43 +158,58 @@
 
 			// Validate verification answer
 			if (verification !== '8') {
-				errorEl.textContent = 'Incorrect answer. Please try again.';
+				const message = 'Incorrect answer. Please try again.';
+				errorEl.textContent = message;
 				errorEl.classList.remove('hidden');
+				if (e.agentInvoked) e.respondWith?.(Promise.resolve(`Submission failed: ${message}`));
 				return;
 			}
 
 			// Validate phone number if provided
 			if (phone && !phoneRegex.test(phone)) {
-				errorEl.textContent = 'Please enter a valid USA phone number.';
+				const message = 'Please enter a valid USA phone number.';
+				errorEl.textContent = message;
 				errorEl.classList.remove('hidden');
+				if (e.agentInvoked) e.respondWith?.(Promise.resolve(`Submission failed: ${message}`));
 				return;
 			}
 
 			// Submit to Formspree
-			try {
-				const response = await fetch(formspreeUrl, {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					body: JSON.stringify({
-						name: formData.get('name'),
-						email: formData.get('email'),
-						phone: formData.get('phone'),
-						message: formData.get('message')
-					})
-				});
+			const submitPromise = (async () => {
+				try {
+					const response = await fetch(formspreeUrl, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({
+							name: formData.get('name'),
+							email: formData.get('email'),
+							phone: formData.get('phone'),
+							message: formData.get('message')
+						})
+					});
 
-				if (response.ok) {
-					form.reset();
-					successEl.textContent = 'Message sent successfully!';
-					successEl.classList.remove('hidden');
-				} else {
-					throw new Error('Form submission failed');
+					if (response.ok) {
+						form.reset();
+						successEl.textContent = 'Message sent successfully!';
+						successEl.classList.remove('hidden');
+						return 'Message sent successfully to Jasper Kooij.';
+					} else {
+						throw new Error('Form submission failed');
+					}
+				} catch (error) {
+					const message = 'There was an error submitting the form. Please try again.';
+					errorEl.textContent = message;
+					errorEl.classList.remove('hidden');
+					return `Submission failed: ${message}`;
 				}
-			} catch (error) {
-				errorEl.textContent = 'There was an error submitting the form. Please try again.';
-				errorEl.classList.remove('hidden');
+			})();
+
+			if (e.agentInvoked) {
+				e.respondWith?.(submitPromise);
+			} else {
+				await submitPromise;
 			}
 		});
 	}
