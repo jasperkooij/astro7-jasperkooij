@@ -34,7 +34,7 @@ const dateModified = builderContent?.lastUpdated
 	<div class="flex min-h-screen items-center justify-center px-4 py-10">
 		<div class="bg-base-100 text-base-content w-full max-w-6xl rounded-xl shadow-lg sm:p-10 md:p-6">
 			<main>
-				<BuilderContentHybrid client:load apiKey={apiKey} model="page" urlPath={urlPath} initialContent={builderContent} />
+				<BuilderContentHybrid client:idle apiKey={apiKey} model="page" urlPath={urlPath} initialContent={builderContent} />
 
 				<!-- Contact Form Section -->
 				<section class="py-12">

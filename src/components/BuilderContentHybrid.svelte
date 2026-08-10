@@ -33,6 +33,11 @@
 				.join('; ');
 		}
 
+		function withWebp(url) {
+			if (!url || !url.includes('cdn.builder.io')) return url;
+			return url.includes('?') ? `${url}&format=webp` : `${url}?format=webp`;
+		}
+
 		function renderBlock(block) {
 			if (!block || !block.component) return '';
 
@@ -47,9 +52,11 @@
 			}
 
 			if (name === 'Image') {
-				const { image, altText, highPriority } = options || {};
+				const { image, altText, width, height, highPriority } = options || {};
 				const loading = highPriority ? 'eager' : 'lazy';
-				return `<div class="${className}" style="${style}" ${id ? `id="${id}"` : ''}><img src="${image}" alt="${altText || ''}" loading="${loading}" style="max-width: 100%; height: auto;" /></div>`;
+				const fetchpriority = highPriority ? ' fetchpriority="high"' : '';
+				const dimensions = `${width ? ` width="${width}"` : ''}${height ? ` height="${height}"` : ''}`;
+				return `<div class="${className}" style="${style}" ${id ? `id="${id}"` : ''}><img src="${withWebp(image)}" alt="${altText || ''}" loading="${loading}"${fetchpriority}${dimensions} style="max-width: 100%; height: auto;" /></div>`;
 			}
 
 			if (name === 'Core:Section') {

@@ -47,7 +47,12 @@ const faqSchema = {
 			{
 				faqs.map((faq, i) => (
 					<div class="collapse-arrow join-item border-base-300 bg-base-200 collapse border">
-						<input type="radio" name="faq-accordion" checked={i === 0} />
+						<input
+							type="radio"
+							name="faq-accordion"
+							checked={i === 0}
+							aria-label={`Toggle answer: ${faq.question}`}
+						/>
 						<div class="collapse-title font-semibold">{faq.question}</div>
 						<div class="collapse-content text-sm">{faq.answer}</div>
 					</div>

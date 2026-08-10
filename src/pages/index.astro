@@ -27,7 +27,7 @@ const dateModified = builderContent?.lastUpdated
 		<div class="bg-base-100 text-base-content w-full max-w-6xl rounded-xl shadow-lg sm:p-10 md:p-6">
 			<main>
 				<div id="about">
-					<BuilderContentHybrid client:load apiKey={apiKey} model="page" urlPath="/" initialContent={builderContent} />
+					<BuilderContentHybrid client:idle apiKey={apiKey} model="page" urlPath="/" initialContent={builderContent} />
 				</div>
 
 				<FAQSchema />

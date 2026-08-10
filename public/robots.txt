@@ -5,5 +5,4 @@ Allow: /
 # Specify the sitemap location
 Sitemap: https://jasperkooij.com/sitemap-index.xml
 
-# LLM-friendly content index
-LLMs: https://jasperkooij.com/llms.txt
+# LLM-friendly content index available at https://jasperkooij.com/llms.txt
