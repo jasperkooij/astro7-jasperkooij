@@ -7,16 +7,19 @@ interface Props {
 	title?: string;
 	description?: string;
 	image?: string;
+	dateModified?: string;
 }
 
 const {
 	title = 'Jasper Kooij',
 	description = 'Director of Web Development',
-	image = '/og-image.png'
+	image = '/og-image.png',
+	dateModified
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = new URL(image, Astro.site);
+const currentYear = new Date().getFullYear();
 
 const schemaGraph = [
 	{
@@ -38,13 +41,18 @@ const schemaGraph = [
 	},
 	{
 		"@context": "https://schema.org",
-		"@type": "WebPage",
+		"@type": "ProfilePage",
 		"@id": `${canonicalURL}#webpage`,
 		"url": canonicalURL,
 		"name": title,
 		"description": description,
 		"isPartOf": { "@id": "https://jasperkooij.com/#website" },
-		"about": { "@id": "https://jasperkooij.com/#person" }
+		"about": { "@id": "https://jasperkooij.com/#person" },
+		"mainEntity": { "@id": "https://jasperkooij.com/#person" },
+		...(dateModified ? { "dateModified": dateModified } : {}),
+		"copyrightHolder": { "@id": "https://jasperkooij.com/#person" },
+		"copyrightYear": currentYear,
+		"publishingPrinciples": "https://jasperkooij.com/#about"
 	},
 	{
 		"@context": "https://schema.org",
@@ -64,7 +72,8 @@ const schemaGraph = [
 		},
 		"worksFor": {
 			"@type": "Organization",
-			"name": "Blend Marketing"
+			"name": "Blend Marketing",
+			"url": "https://blend.travel"
 		},
 		"url": "https://jasperkooij.com/",
 		"sameAs": [
@@ -73,9 +82,6 @@ const schemaGraph = [
 			"https://twitter.com/jasperkooij",
 			"https://github.com/jasperkooij"
 		],
-		"copyrightHolder": { "@id": "https://jasperkooij.com/#person" },
-		"copyrightYear": 2025,
-		"publishingPrinciples": "https://jasperkooij.com/#about",
 		"knowsAbout": [
 			"Full-Stack Web Development",
 			"WordPress",
@@ -87,7 +93,37 @@ const schemaGraph = [
 			"Performance Optimization",
 			"Travel & Hospitality Websites",
 			"Headless CMS"
-		]
+		],
+		"hasOfferCatalog": {
+			"@type": "OfferCatalog",
+			"name": "Services",
+			"itemListElement": [
+				{
+					"@type": "Offer",
+					"itemOffered": { "@type": "Service", "name": "Full-Stack Web Development" }
+				},
+				{
+					"@type": "Offer",
+					"itemOffered": { "@type": "Service", "name": "Technical Team Leadership" }
+				},
+				{
+					"@type": "Offer",
+					"itemOffered": { "@type": "Service", "name": "Booking Engine Integration" }
+				},
+				{
+					"@type": "Offer",
+					"itemOffered": { "@type": "Service", "name": "Performance & Core Web Vitals Optimization" }
+				},
+				{
+					"@type": "Offer",
+					"itemOffered": { "@type": "Service", "name": "SEO & A/B Testing" }
+				},
+				{
+					"@type": "Offer",
+					"itemOffered": { "@type": "Service", "name": "Cloud-Based Analytics Solutions" }
+				}
+			]
+		}
 	}
 ];
 ---

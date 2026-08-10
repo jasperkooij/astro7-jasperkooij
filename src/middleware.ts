@@ -13,6 +13,13 @@ export const onRequest = defineMiddleware(async (context, next) => {
   if (!prefersMarkdown) {
     const response = await next();
     response.headers.set('Vary', 'Accept');
+    response.headers.set('X-Content-Type-Options', 'nosniff');
+    response.headers.set('X-Frame-Options', 'DENY');
+    response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+    response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+    if (response.headers.get('content-type')?.includes('text/html')) {
+      response.headers.set('Cache-Control', 'public, max-age=300, s-maxage=3600');
+    }
     return response;
   }
 

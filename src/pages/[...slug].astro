@@ -18,9 +18,18 @@ const description = 'Director of Web Development';
 
 const kv = (env as any).BUILDER_CACHE;
 const builderContent = await fetchBuilderContent(apiKey, urlPath, kv);
+
+if (!builderContent) {
+	Astro.response.status = 404;
+	Astro.response.statusText = 'Not Found';
+}
+
+const dateModified = builderContent?.lastUpdated
+	? new Date(builderContent.lastUpdated).toISOString()
+	: undefined;
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} dateModified={dateModified}>
 	<Navbar />
 	<div class="flex min-h-screen items-center justify-center px-4 py-10">
 		<div class="bg-base-100 text-base-content w-full max-w-6xl rounded-xl shadow-lg sm:p-10 md:p-6">

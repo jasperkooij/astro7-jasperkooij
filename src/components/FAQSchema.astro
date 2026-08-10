@@ -1,43 +1,58 @@
 ---
-// FAQ Schema for rich snippets in search results
+// FAQ content: rendered both as visible on-page markup (for text-extraction /
+// AI citability) and as FAQPage JSON-LD (for rich snippets).
+const faqs = [
+	{
+		question: 'What technologies does Jasper Kooij specialize in?',
+		answer:
+			'Jasper specializes in WordPress (Bricks Builder, Oxygen Builder), Svelte, React, Qwik, Builder.io, and Craft CMS. He also has extensive experience with deployment platforms like Vercel, AWS, Netlify, and Cloudflare.'
+	},
+	{
+		question: 'What booking engines does Jasper Kooij integrate?',
+		answer:
+			'Jasper integrates leading booking engines including Ventrata, Roller, Peek Pro, FareHarbor, Galaxy Connect, and Rezdy for hotels, tours, and attraction operators.'
+	},
+	{
+		question: 'Where is Jasper Kooij located?',
+		answer:
+			'Jasper is based in the Madison, Wisconsin area and works with clients across North America, Canada, and Europe.'
+	},
+	{
+		question: 'What services does Jasper Kooij offer?',
+		answer:
+			'Jasper offers full-stack web development, technical team leadership, booking engine integration, performance optimization, Core Web Vitals improvement, SEO, A/B testing, and cloud-based analytics solutions for travel, hospitality, and tourism clients.'
+	}
+];
+
 const faqSchema = {
 	"@context": "https://schema.org",
 	"@type": "FAQPage",
-	"mainEntity": [
-		{
-			"@type": "Question",
-			"name": "What technologies does Jasper Kooij specialize in?",
-			"acceptedAnswer": {
-				"@type": "Answer",
-				"text": "Jasper specializes in WordPress (Bricks Builder, Oxygen Builder), Svelte, React, Qwik, Builder.io, and Craft CMS. He also has extensive experience with deployment platforms like Vercel, AWS, Netlify, and Cloudflare."
-			}
-		},
-		{
-			"@type": "Question",
-			"name": "What booking engines does Jasper Kooij integrate?",
-			"acceptedAnswer": {
-				"@type": "Answer",
-				"text": "Jasper integrates leading booking engines including Ventrata, Roller, Peek Pro, FareHarbor, Galaxy Connect, and Rezdy for hotels, tours, and attraction operators."
-			}
-		},
-		{
-			"@type": "Question",
-			"name": "Where is Jasper Kooij located?",
-			"acceptedAnswer": {
-				"@type": "Answer",
-				"text": "Jasper is based in the Madison, Wisconsin area and works with clients across North America, Canada, and Europe."
-			}
-		},
-		{
-			"@type": "Question",
-			"name": "What services does Jasper Kooij offer?",
-			"acceptedAnswer": {
-				"@type": "Answer",
-				"text": "Jasper offers full-stack web development, technical team leadership, booking engine integration, performance optimization, Core Web Vitals improvement, SEO, A/B testing, and cloud-based analytics solutions for travel, hospitality, and tourism clients."
-			}
+	"mainEntity": faqs.map((faq) => ({
+		"@type": "Question",
+		"name": faq.question,
+		"acceptedAnswer": {
+			"@type": "Answer",
+			"text": faq.answer
 		}
-	]
+	}))
 };
 ---
 
 <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+<section class="py-12" id="faq" aria-labelledby="faq-heading">
+	<div class="container mx-auto max-w-3xl px-4">
+		<h2 id="faq-heading" class="mb-6 text-center text-3xl font-bold">Frequently Asked Questions</h2>
+		<div class="join join-vertical w-full">
+			{
+				faqs.map((faq, i) => (
+					<div class="collapse-arrow join-item border-base-300 bg-base-200 collapse border">
+						<input type="radio" name="faq-accordion" checked={i === 0} />
+						<div class="collapse-title font-semibold">{faq.question}</div>
+						<div class="collapse-content text-sm">{faq.answer}</div>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</section>

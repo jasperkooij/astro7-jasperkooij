@@ -14,6 +14,7 @@ export interface BuilderBlock {
 }
 
 export interface BuilderContent {
+  lastUpdated?: number;
   data?: {
     blocks?: BuilderBlock[];
     title?: string;
