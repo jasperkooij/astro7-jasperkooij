@@ -1,6 +1,7 @@
 # Allow all bots
 User-agent: *
 Allow: /
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 
 # Specify the sitemap location
 Sitemap: https://jasperkooij.com/sitemap-index.xml
