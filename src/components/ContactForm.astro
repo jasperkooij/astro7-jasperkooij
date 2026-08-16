@@ -108,6 +108,10 @@
 			aria-required="true"
 			aria-describedby="verification-help"
 			autocomplete="off"
+			{...{
+				toolparamdescription:
+					'Anti-spam verification. The answer is 8 (four times 2).'
+			}}
 		/>
 		<span id="verification-help" class="label-text-alt mt-1">Anti-spam verification</span>
 	</div>
@@ -129,6 +133,8 @@
 		const successEl = document.getElementById('success-message');
 
 		if (!form || !errorEl || !successEl) return;
+		if (form.dataset.submitBound === 'true') return;
+		form.dataset.submitBound = 'true';
 
 		const formspreeUrl = form.dataset.formspreeUrl;
 		if (!formspreeUrl) return;

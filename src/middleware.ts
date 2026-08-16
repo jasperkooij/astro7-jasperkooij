@@ -19,6 +19,11 @@ export const onRequest = defineMiddleware(async (context, next) => {
     response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
     if (response.headers.get('content-type')?.includes('text/html')) {
       response.headers.set('Cache-Control', 'public, max-age=300, s-maxage=3600');
+      // Chrome WebMCP origin trial token (public by design). Set PUBLIC_WEBMCP_ORIGIN_TRIAL_TOKEN after registering jasperkooij.com.
+      const originTrialToken = import.meta.env.PUBLIC_WEBMCP_ORIGIN_TRIAL_TOKEN;
+      if (typeof originTrialToken === 'string' && originTrialToken.length > 0) {
+        response.headers.set('Origin-Trial', originTrialToken);
+      }
     }
     return response;
   }

@@ -23,6 +23,17 @@ body {
 	box-shadow: 0 0 0 1px var(--color-base-100) inset;
 }
 
+/* WebMCP: agent is filling/reviewing the contact form (Chrome declarative API). */
+#contact-form:tool-form-active {
+	outline: 2px dashed var(--color-primary);
+	outline-offset: 4px;
+}
+
+#contact-form :is(button[type='submit']):tool-submit-active {
+	outline: 2px dashed var(--color-primary);
+	outline-offset: 2px;
+}
+
 /* Builder.io content styles */
 .builder-text > p:first-of-type,
 .builder-text > .builder-paragraph:first-of-type {

@@ -6,6 +6,12 @@ import svelte from '@astrojs/svelte';
 import sitemap from '@astrojs/sitemap';
 import { execSync } from 'child_process';
 
+/** @type {string | undefined} */
+let sitemapLastmod;
+try {
+  sitemapLastmod = execSync('git log -1 --format=%ci -- .').toString().trim().split(' ')[0];
+} catch {}
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://jasperkooij.com',
@@ -33,10 +39,7 @@ export default defineConfig({
     svelte(),
     sitemap({
       serialize(item) {
-        try {
-          const lastmod = execSync('git log -1 --format=%ci -- .').toString().trim().split(' ')[0];
-          if (lastmod) item.lastmod = lastmod;
-        } catch {}
+        if (sitemapLastmod) item.lastmod = sitemapLastmod;
         return item;
       }
     })

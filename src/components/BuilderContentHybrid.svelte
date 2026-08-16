@@ -7,11 +7,10 @@
 	export let urlPath: string = '/';
 	export let initialContent: any = null;
 
-	// Check if we're in preview mode
-	let isPreview = false;
+	// This island is only mounted on Builder preview URLs.
+	let isPreview = true;
 
 	onMount(() => {
-		// Check for Builder.io preview query params
 		const searchParams = new URLSearchParams(window.location.search);
 		isPreview = searchParams.has('builder.preview') || isPreviewing();
 	});
@@ -38,6 +37,8 @@
 			return url.includes('?') ? `${url}&format=webp` : `${url}?format=webp`;
 		}
 
+		let hasRenderedText = false;
+
 		function renderBlock(block) {
 			if (!block || !block.component) return '';
 
@@ -47,16 +48,19 @@
 			const id = block.id || '';
 
 			if (name === 'Text') {
+				hasRenderedText = true;
 				const text = options?.text || '';
 				return `<div class="builder-text ${className}" style="${style}" ${id ? `id="${id}"` : ''}>${text}</div>`;
 			}
 
 			if (name === 'Image') {
-				const { image, altText, width, height, highPriority } = options || {};
-				const loading = highPriority ? 'eager' : 'lazy';
-				const fetchpriority = highPriority ? ' fetchpriority="high"' : '';
+				const { image, altText, width, height, highPriority, sizes } = options || {};
+				const isLcp = Boolean(highPriority) && !hasRenderedText;
+				const loading = isLcp ? 'eager' : 'lazy';
+				const fetchpriority = isLcp ? ' fetchpriority="high"' : '';
+				const sizesAttr = sizes ? ` sizes="${sizes}"` : '';
 				const dimensions = `${width ? ` width="${width}"` : ''}${height ? ` height="${height}"` : ''}`;
-				return `<div class="${className}" style="${style}" ${id ? `id="${id}"` : ''}><img src="${withWebp(image)}" alt="${altText || ''}" loading="${loading}"${fetchpriority}${dimensions} style="max-width: 100%; height: auto;" /></div>`;
+				return `<div class="${className}" style="${style}" ${id ? `id="${id}"` : ''}><img src="${withWebp(image)}" alt="${altText || ''}" loading="${loading}"${fetchpriority}${sizesAttr}${dimensions} style="max-width: 100%; height: auto;" /></div>`;
 			}
 
 			if (name === 'Core:Section') {

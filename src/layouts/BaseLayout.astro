@@ -20,6 +20,9 @@ const {
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = new URL(image, Astro.site);
 const currentYear = new Date().getFullYear();
+// Chrome WebMCP origin trial — register https://jasperkooij.com at
+// https://developer.chrome.com/origintrials then set PUBLIC_WEBMCP_ORIGIN_TRIAL_TOKEN.
+const originTrialToken = import.meta.env.PUBLIC_WEBMCP_ORIGIN_TRIAL_TOKEN;
 
 const schemaGraph = [
 	{
@@ -29,15 +32,7 @@ const schemaGraph = [
 		"url": "https://jasperkooij.com/",
 		"name": "Jasper Kooij",
 		"description": "Full-stack developer specialising in travel, hospitality, and tourism clients.",
-		"publisher": { "@id": "https://jasperkooij.com/#person" },
-		"potentialAction": {
-			"@type": "SearchAction",
-			"target": {
-				"@type": "EntryPoint",
-				"urlTemplate": "https://jasperkooij.com/?s={search_term_string}"
-			},
-			"query-input": "required name=search_term_string"
-		}
+		"publisher": { "@id": "https://jasperkooij.com/#person" }
 	},
 	{
 		"@context": "https://schema.org",
@@ -137,7 +132,17 @@ const schemaGraph = [
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 		<link rel="manifest" href="/manifest.json" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		{originTrialToken && (
+			<meta http-equiv="origin-trial" content={originTrialToken} />
+		)}
+		<link rel="preconnect" href="https://cdn.builder.io" />
 		<title>{title}</title>
+		<script is:inline>
+			try {
+				const theme = localStorage.getItem('theme');
+				if (theme) document.documentElement.setAttribute('data-theme', theme);
+			} catch {}
+		</script>
 		<meta name="description" content={description} />
 		<meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
 
@@ -166,5 +171,6 @@ const schemaGraph = [
 	</head>
 	<body>
 		<slot />
+		<script src="../scripts/webmcp.ts"></script>
 	</body>
 </html>

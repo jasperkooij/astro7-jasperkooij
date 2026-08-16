@@ -20,39 +20,47 @@ function withWebp(url: string): string {
 	return url.includes('?') ? `${url}&format=webp` : `${url}?format=webp`;
 }
 
-function renderBlock(block: any): string {
-	if (!block || !block.component) return '';
+const htmlContent = (() => {
+	let hasRenderedText = false;
 
-	const { name, options } = block.component;
-	const style = getStyles(block);
-	const className = block.class || '';
-	const id = block.id || '';
+	function renderBlock(block: any): string {
+		if (!block || !block.component) return '';
 
-	if (name === 'Text') {
-		const text = options?.text || '';
-		return `<div class="builder-text ${className}" style="${style}" ${id ? `id="${id}"` : ''}>${text}</div>`;
+		const { name, options } = block.component;
+		const style = getStyles(block);
+		const className = block.class || '';
+		const id = block.id || '';
+
+		if (name === 'Text') {
+			hasRenderedText = true;
+			const text = options?.text || '';
+			return `<div class="builder-text ${className}" style="${style}" ${id ? `id="${id}"` : ''}>${text}</div>`;
+		}
+
+		if (name === 'Image') {
+			const { image, altText, width, height, highPriority, sizes } = options || {};
+			// Don't treat below-fold photos as LCP just because Builder marked highPriority.
+			const isLcp = Boolean(highPriority) && !hasRenderedText;
+			const loading = isLcp ? 'eager' : 'lazy';
+			const fetchpriority = isLcp ? ' fetchpriority="high"' : '';
+			const sizesAttr = sizes ? ` sizes="${sizes}"` : '';
+			const dimensions = `${width ? ` width="${width}"` : ''}${height ? ` height="${height}"` : ''}`;
+			return `<div class="${className}" style="${style}" ${id ? `id="${id}"` : ''}><img src="${withWebp(image)}" alt="${altText || ''}" loading="${loading}"${fetchpriority}${sizesAttr}${dimensions} style="max-width: 100%; height: auto;" /></div>`;
+		}
+
+		if (name === 'Core:Section') {
+			const children = block.children || [];
+			const childrenHtml = children.map((child: any) => renderBlock(child)).join('');
+			return `<section class="${className}" style="${style}" ${id ? `id="${id}"` : ''}>${childrenHtml}</section>`;
+		}
+
+		return '';
 	}
 
-	if (name === 'Image') {
-		const { image, altText, width, height, highPriority } = options || {};
-		const loading = highPriority ? 'eager' : 'lazy';
-		const fetchpriority = highPriority ? ' fetchpriority="high"' : '';
-		const dimensions = `${width ? ` width="${width}"` : ''}${height ? ` height="${height}"` : ''}`;
-		return `<div class="${className}" style="${style}" ${id ? `id="${id}"` : ''}><img src="${withWebp(image)}" alt="${altText || ''}" loading="${loading}"${fetchpriority}${dimensions} style="max-width: 100%; height: auto;" /></div>`;
-	}
-
-	if (name === 'Core:Section') {
-		const children = block.children || [];
-		const childrenHtml = children.map((child: any) => renderBlock(child)).join('');
-		return `<section class="${className}" style="${style}" ${id ? `id="${id}"` : ''}>${childrenHtml}</section>`;
-	}
-
-	return '';
-}
-
-const htmlContent = content?.data?.blocks
-	? content.data.blocks.map((block: any) => renderBlock(block)).join('')
-	: '';
+	return content?.data?.blocks
+		? content.data.blocks.map((block: any) => renderBlock(block)).join('')
+		: '';
+})();
 ---
 
 {htmlContent ? (

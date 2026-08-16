@@ -6,11 +6,12 @@ import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import ContactForm from '../components/ContactForm.astro';
 import BuilderContentHybrid from '../components/BuilderContentHybrid.svelte';
+import BuilderContentStatic from '../components/BuilderContentStatic.astro';
 import FAQSchema from '../components/FAQSchema.astro';
 import { env } from 'cloudflare:workers';
 import { fetchBuilderContent } from '../utils/builderContent';
 
-const apiKey = import.meta.env.PUBLIC_BUILDER_API_KEY;
+const apiKey = import.meta.env.PUBLIC_BUILDER_API_KEY ?? '';
 const title = 'Jasper Kooij - Full Stack Developer';
 const description = 'Full-stack developer and technical team leader with over 25 years at the forefront of web innovation.';
 
@@ -19,6 +20,9 @@ const builderContent = await fetchBuilderContent(apiKey, '/', kv);
 const dateModified = builderContent?.lastUpdated
 	? new Date(builderContent.lastUpdated).toISOString()
 	: undefined;
+const isBuilderPreview =
+	Astro.url.searchParams.has('builder.preview') ||
+	Astro.url.searchParams.has('__builder_editing__');
 ---
 
 <BaseLayout title={title} description={description} dateModified={dateModified}>
@@ -27,7 +31,11 @@ const dateModified = builderContent?.lastUpdated
 		<div class="bg-base-100 text-base-content w-full max-w-6xl rounded-xl shadow-lg sm:p-10 md:p-6">
 			<main>
 				<div id="about">
-					<BuilderContentHybrid client:idle apiKey={apiKey} model="page" urlPath="/" initialContent={builderContent} />
+					{isBuilderPreview ? (
+						<BuilderContentHybrid client:only="svelte" apiKey={apiKey} model="page" urlPath="/" initialContent={builderContent} />
+					) : (
+						<BuilderContentStatic content={builderContent} />
+					)}
 				</div>
 
 				<FAQSchema />
