@@ -1,0 +1,66 @@
+{
+  "name": "Jasper Kooij",
+  "url": "https://jasperkooij.com/",
+  "description": "Personal portfolio for Jasper Kooij, a full-stack developer. Lists the WebMCP tools this page registers for AI agents browsing it live.",
+  "note": "This manifest is NOT part of the official WebMCP specification, which does not yet define a pre-navigation discovery mechanism. It's a speculative, unofficial convention so a crawler or agent can learn what tools exist before loading the page. Tools themselves only become callable client-side, via document.modelContext, in a live WebMCP-capable browser session (Chrome 146+, this origin enrolled in the Chrome Origin Trial) - this file cannot be invoked remotely.",
+  "specification": "https://webmachinelearning.github.io/webmcp/",
+  "tools": [
+    {
+      "name": "get-bio",
+      "description": "Return Jasper Kooij's about/bio text from this page: background, role, and who he works with.",
+      "inputSchema": { "type": "object", "properties": {}, "additionalProperties": false }
+    },
+    {
+      "name": "get-services",
+      "description": "List the professional services Jasper Kooij offers (web development, booking engines, performance, SEO).",
+      "inputSchema": { "type": "object", "properties": {}, "additionalProperties": false }
+    },
+    {
+      "name": "list-technologies",
+      "description": "List frontend, CMS, and deployment technologies Jasper Kooij specializes in.",
+      "inputSchema": { "type": "object", "properties": {}, "additionalProperties": false }
+    },
+    {
+      "name": "list-booking-engines",
+      "description": "List booking engines Jasper Kooij integrates for hotels, tours, and attractions (Ventrata, FareHarbor, and others).",
+      "inputSchema": { "type": "object", "properties": {}, "additionalProperties": false }
+    },
+    {
+      "name": "scroll-to-section",
+      "description": "Scroll this page to a section so the visitor can see it: about, contact, or faq.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "section": {
+            "type": "string",
+            "enum": ["about", "contact", "faq"],
+            "description": "Target section id: about, contact, or faq."
+          }
+        },
+        "required": ["section"],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "contact-jasper",
+      "type": "declarative-form",
+      "description": "Send a message to Jasper Kooij through his contact form to inquire about web development work, collaboration, or general questions. Requires manual confirmation before sending.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "description": "The sender's full name." },
+          "email": { "type": "string", "description": "The sender's email address, so Jasper can reply." },
+          "phone": {
+            "type": "string",
+            "description": "Optional. A US-format phone number, e.g. (608) 555-1234 or +1 608-555-1234."
+          },
+          "message": {
+            "type": "string",
+            "description": "The message to send to Jasper: describe the inquiry, project, or question."
+          }
+        },
+        "required": ["name", "email", "message"]
+      }
+    }
+  ]
+}

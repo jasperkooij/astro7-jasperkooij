@@ -19,6 +19,14 @@ Jasper Kooij is Director of Web Development at Blend Marketing. He builds high-p
 - [Home](https://jasperkooij.com/): Portfolio, background, and contact form
 - [Markdown version](https://jasperkooij.com/): Request with `Accept: text/markdown` header for clean machine-readable content
 
+## WebMCP tools
+
+This page registers WebMCP tools (get-bio, get-services, list-technologies, list-booking-engines,
+scroll-to-section, and a contact-jasper form tool) via `document.modelContext`, callable by an AI
+agent actively driving a live browser session on this page (requires a WebMCP-capable browser and
+this origin's Chrome Origin Trial to be active - not callable remotely). Full tool schemas:
+[/.well-known/webmcp.json](https://jasperkooij.com/.well-known/webmcp.json)
+
 ## Contact
 
 - Email: jasperkooij@gmail.com
